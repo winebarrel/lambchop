@@ -23,8 +23,11 @@ class Lambchop::Diff
 
     page = @client.get_function(:function_name => @function_name).first
 
-    Lambchop::Utils.open_source(page.code.location) do |func|
-      @out.puts(Diffy::Diff.new(func, file))
+    Lambchop::Utils.open_source(page.code.location) do |name, func|
+      @out.puts("--- #{@function_name}:#{name}")
+      @out.puts("+++ #{@file.path}")
+      diff = Diffy::Diff.new(func, file, :include_diff_info => true).to_s
+      @out.puts(diff.each_line.to_a.slice(2..-1).join)
     end
   end
 end
