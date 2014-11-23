@@ -94,6 +94,14 @@ exports.handler = function(event, context) {
 };
 ```
 
+### Upload only
+
+```javascript
+#!/usr/bin/env lambchop -d
+/*
+function_name: test
+```
+
 ## Demo
 
 * https://asciinema.org/a/14158

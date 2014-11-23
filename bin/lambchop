@@ -2,5 +2,17 @@
 $: << File.expand_path("#{File.dirname __FILE__}/../lib")
 require 'rubygems'
 require 'lambchop'
+require 'optparse'
 
-Lambchop::Client.start(ARGF.read, ARGF.path)
+Version = Lambchop::VERSION
+
+options = {}
+
+ARGV.options do |opt|
+  opt.on('-d', '--detach') { options[:detach] = true }
+  opt.parse!
+end
+
+open(ARGV[0]) do |f|
+  Lambchop::Client.start(f.read, f.path, options)
+end

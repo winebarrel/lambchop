@@ -24,6 +24,8 @@ class Lambchop::Client
     $stderr.puts('Function was uploaded:')
     $stderr.puts(JSON.pretty_generate(resp.to_h))
 
+    exit if @options[:detach]
+
     Lambchop::WatchDog.start(function_name, @options[:watch_dog] || {})
 
     sleep
