@@ -5,7 +5,7 @@ class Lambchop::Client
 
   def initialize(source, path)
     @source = source
-    @path = (path == '-') ? nil : path
+    @path = path
   end
 
   def start
