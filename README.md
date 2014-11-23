@@ -2,6 +2,8 @@
 
 It is a tool that invoke AWS Lambda function from the local machine as a normally script.
 
+[![Gem Version](https://badge.fury.io/rb/lambchop.svg)](http://badge.fury.io/rb/lambchop)
+
 ## Installation
 
 Add this line to your application's Gemfile:
