@@ -9,7 +9,30 @@ class Lambchop::Client
   end
 
   def start
-    p @source
-    p @path
+    src = remove_shebang(@source)
+    magic_comment = parse_magic_comment(src)
+    p magic_comment
+    p src
+  end
+
+  private
+
+  def remove_shebang(src)
+    src.sub(/\A#![^\n]*\n/, '')
+  end
+
+  def parse_magic_comment(src)
+    ss = StringScanner.new(src)
+
+    unless ss.scan(%r|\A\s*/\*|)
+      raise 'Cannot find magic comment'
+    end
+
+    unless comment = ss.scan_until(%r|\*/|)
+      raise 'Cannot find magic comment'
+    end
+
+    comment.sub!(%r|\*/\z|, '')
+    YAML.parse(comment)
   end
 end
