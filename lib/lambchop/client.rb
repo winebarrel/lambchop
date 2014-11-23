@@ -41,9 +41,23 @@ class Lambchop::Client
   end
 
   def zip_source(src)
+    src_dir = File.dirname(@path)
+    node_modules = []
+
+    Dir.glob("#{src_dir}/node_modules/**/*") do |file|
+      if File.file?(file)
+        node_modules << file
+      end
+    end
+
     Zip::OutputStream.write_buffer do |out|
       out.put_next_entry(File.basename(@path))
       out.write(src)
+
+      node_modules.each do |file|
+        out.put_next_entry(file.sub(%r|\A#{src_dir}/|, ''))
+        out.write(open(file, &:read))
+      end
     end
   end
 
