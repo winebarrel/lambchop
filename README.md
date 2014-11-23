@@ -93,3 +93,7 @@ exports.handler = function(event, context) {
     context.done(null, 'Hello World');  // SUCCESS with message
 };
 ```
+
+## Demo
+
+* https://asciinema.org/a/14158
