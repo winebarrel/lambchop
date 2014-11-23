@@ -51,6 +51,7 @@ $ ./test.js
 ```sh
 $ lambchop-cat
 usage: lambchop-cat <function-name>
+
 $ lambchop-cat
 $ echo '{"key1":100, "key2":200, "key3":300}' | lambchop-cat test
 ```
@@ -106,6 +107,7 @@ exports.handler = function(event, context) {
 ```sh
 ~$ lambchop-tail
 usage: lambchop-tail <function-name>
+
 ~$ lambchop-tail test
 START RequestId: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 ...
