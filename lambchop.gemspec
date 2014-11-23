@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Lambchop::VERSION
   spec.authors       = ['Genki Sugawara']
   spec.email         = ['sgwr_dts@yahoo.co.jp']
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{It is a tool that invoke AWS Lambda function from the local machine as a normally script.}
+  spec.description   = %q{It is a tool that invoke AWS Lambda function from the local machine as a normally script.}
   spec.homepage      = ''
   spec.license       = 'MIT'
 
