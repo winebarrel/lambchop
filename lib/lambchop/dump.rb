@@ -5,7 +5,7 @@ class Lambchop::Dump
 
   def initialize(function_name, options = {})
     @function_name = function_name
-    @client        = options[:client] || Aws::Lambda::Client.new(region: 'us-east-1')
+    @client        = options[:client] || Aws::Lambda::Client.new
     @out           = options[:out] || $stdout
     @options       = options
   end

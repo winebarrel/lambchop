@@ -6,6 +6,7 @@ require 'zip'
 
 module Lambchop; end
 
+require 'lambchop/cat'
 require 'lambchop/client'
 require 'lambchop/dump'
 require 'lambchop/watch_dog'

@@ -6,7 +6,7 @@ class Lambchop::Client
   def initialize(source, path, options = {})
     @source  = source
     @path    = path
-    @client  = options[:client] || Aws::Lambda::Client.new(region: 'us-east-1')
+    @client  = options[:client] || Aws::Lambda::Client.new
     @options = options
   end
 
