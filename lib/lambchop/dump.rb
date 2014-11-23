@@ -42,7 +42,8 @@ class Lambchop::Dump
   end
 
   def puts_source(location)
-    Lambchop::Utils.open_source(location) do |src|
+    Lambchop::Utils.open_source(location) do |name, src|
+      @out.puts("// #{name}")
       @out.puts(src)
     end
   end

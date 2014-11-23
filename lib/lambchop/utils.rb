@@ -25,7 +25,7 @@ class Lambchop::Utils
         Zip::InputStream.open(f) do |zis|
           while entry = zis.get_next_entry
             next if entry.name =~ %r|\Anode_modules/|
-            yield(entry.get_input_stream.read)
+            yield(entry.name, entry.get_input_stream.read)
           end
         end
       end
