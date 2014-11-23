@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['sgwr_dts@yahoo.co.jp']
   spec.summary       = %q{It is a tool that invoke AWS Lambda function from the local machine as a normally script.}
   spec.description   = %q{It is a tool that invoke AWS Lambda function from the local machine as a normally script.}
-  spec.homepage      = ''
+  spec.homepage      = 'https://github.com/winebarrel/lambchop'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0")
