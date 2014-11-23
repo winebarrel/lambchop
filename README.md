@@ -69,7 +69,7 @@ END RequestId: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 REPORT RequestId: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx  Duration: 117.54 ms Billed Duration: 200 ms   Memory Size: 128 MB Max Memory Used: 9 MB
 ```
 
-### Dump function
+## Dump function
 
 ```sh
 $ lambchop-dump
@@ -97,14 +97,14 @@ exports.handler = function(event, context) {
 };
 ```
 
-### Upload only
+## Upload only
 
 ```javascript
 #!/usr/bin/env lambchop -d
 ...
 ```
 
-### Follow log only
+## Follow log only
 
 ```sh
 ~$ lambchop-tail
@@ -113,6 +113,13 @@ usage: lambchop-tail <function-name>
 ~$ lambchop-tail test
 START RequestId: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 ...
+```
+
+# node module path
+```
+.
+├── lambda-script.js
+└── node_modules/
 ```
 
 ## Demo
