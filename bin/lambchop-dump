@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+$: << File.expand_path("#{File.dirname __FILE__}/../lib")
+require 'rubygems'
+require 'lambchop'
+
+if ARGV.length != 1
+  puts 'usage: lambchop-dump <function-name>'
+  exit 1
+end
+
+Lambchop::Dump.dump(ARGV[0])
