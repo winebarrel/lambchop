@@ -14,4 +14,4 @@
 mkmf.log
 test.rb
 test.js
-node_module/
+node_modules/
