@@ -33,6 +33,6 @@ class Lambchop::Client
     end
 
     comment.sub!(%r|\*/\z|, '')
-    YAML.parse(comment)
+    YAML.load(comment)
   end
 end
