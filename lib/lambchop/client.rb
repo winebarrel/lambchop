@@ -11,8 +11,8 @@ class Lambchop::Client
   end
 
   def start
-    src = remove_shebang(@source)
-    config, src = parse_magic_comment(src)
+    src = Lambchop::Utils.remove_shebang(@source)
+    config, src = Lambchop::Utils.parse_magic_comment(src)
 
     config['function_name'] ||= File.basename(@path, '.js')
     function_name = config['function_name']
@@ -59,25 +59,5 @@ class Lambchop::Client
         out.write(open(file, &:read))
       end
     end
-  end
-
-  def remove_shebang(src)
-    src.sub(/\A#![^\n]*\n/, '')
-  end
-
-  def parse_magic_comment(src)
-    ss = StringScanner.new(src)
-
-    unless ss.scan(%r|\A\s*/\*|)
-      raise 'Cannot find magic comment'
-    end
-
-    unless comment = ss.scan_until(%r|\*/|)
-      raise 'Cannot find magic comment'
-    end
-
-    comment.sub!(%r|\*/\z|, '')
-
-    [YAML.load(comment), ss.rest.sub(/\A\n/, '')]
   end
 end

@@ -42,12 +42,8 @@ class Lambchop::Dump
   end
 
   def puts_source(location)
-    open(location) do |f|
-      Zip::InputStream.open(f) do |zis|
-        while entry = zis.get_next_entry
-          @out.puts(entry.get_input_stream.read)
-        end
-      end
+    Lambchop::Utils.open_source(location) do |src|
+      @out.puts(src)
     end
   end
 end
