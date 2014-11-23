@@ -1,5 +1,3 @@
-require 'lambchop/version'
+module Lambchop; end
 
-module Lambchop
-  # Your code goes here...
-end
+require 'lambchop/version'
