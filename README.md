@@ -52,7 +52,7 @@ $ ./test.js
 $ lambchop-cat
 usage: lambchop-cat <function-name>
 $ lambchop-cat
-$ echo '{"key1":100, "key2":200, "key3":300}' | bundle exec ./bin/lambchop-cat test
+$ echo '{"key1":100, "key2":200, "key3":300}' | lambchop-cat test
 ```
 
 **Terminal 1**:
