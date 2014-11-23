@@ -1,4 +1,4 @@
-require "lambchop/version"
+require 'lambchop/version'
 
 module Lambchop
   # Your code goes here...
