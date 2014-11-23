@@ -98,8 +98,17 @@ exports.handler = function(event, context) {
 
 ```javascript
 #!/usr/bin/env lambchop -d
-/*
-function_name: test
+...
+```
+
+### Follow log only
+
+```sh
+~$ lambchop-tail
+usage: lambchop-tail <function-name>
+~$ lambchop-tail test
+START RequestId: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+...
 ```
 
 ## Demo
