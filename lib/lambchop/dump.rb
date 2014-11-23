@@ -7,6 +7,7 @@ class Lambchop::Dump
     @function_name = function_name
     @client        = options[:client] || Aws::Lambda::Client.new(region: 'us-east-1')
     @out           = options[:out] || $stdout
+    @options       = options
   end
 
   def dump

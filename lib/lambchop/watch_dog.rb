@@ -1,20 +1,19 @@
 Thread::abort_on_exception = true
 
-class Lambchop::LogsWatchDog
+class Lambchop::WatchDog
   def self.start(function_name, options = {})
     self.new(function_name, options).start
   end
 
-  attr_accessor :interval
-
   def initialize(function_name, options = {})
     @function_name  = function_name
     @log_group_name = "/aws/lambda/#{@function_name}"
-    @client         = options[:client] || Aws::CloudWatchLogs::Client.new
+    @client         = options[:client] || Aws::CloudWatchLogs::Client.new(region: 'us-east-1')
     @start_time     = options[:start_time] || Time.now
     @out            = options[:out] || $stdout
     @last_timestamp = time_to_timestamp(@start_time) - 1
-    @interval       = 1
+    @interval       = options[:interval] || 1
+    @options        = options
   end
 
   def start
@@ -23,7 +22,7 @@ class Lambchop::LogsWatchDog
     Thread.start do
       while @running
         follow_logs
-        sleep interval
+        sleep @interval
       end
     end
   end

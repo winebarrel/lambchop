@@ -1,21 +1,47 @@
 class Lambchop::Client
-  def self.start(source, path)
-    self.new(source, path).start
+  def self.start(source, path, options = {})
+    self.new(source, path, options).start
   end
 
-  def initialize(source, path)
-    @source = source
-    @path = path
+  def initialize(source, path, options = {})
+    @source  = source
+    @path    = path
+    @client  = options[:client] || Aws::Lambda::Client.new(region: 'us-east-1')
+    @options = options
   end
 
   def start
     src = remove_shebang(@source)
-    magic_comment = parse_magic_comment(src)
-    p magic_comment
-    p src
+    config, src = parse_magic_comment(src)
+
+    config['function_name'] ||= File.basename(@path, '.js')
+    function_name = config['function_name']
+
+    config['mode']    ||= 'event'
+    config['runtime'] ||= 'nodejs'
+
+    upload_function(config, src)
+
+    Lambchop::WatchDog.start(function_name, @options[:watch_dog] || {})
+
+    sleep
   end
 
   private
+
+  def upload_function(config, src)
+    params = {}
+    config.each {|k, v| params[k.to_sym] = v }
+    params[:function_zip] = zip_source(src).string
+    @client.upload_function(params)
+  end
+
+  def zip_source(src)
+    Zip::OutputStream.write_buffer do |out|
+      out.put_next_entry(File.basename(@path))
+      out.write(src)
+    end
+  end
 
   def remove_shebang(src)
     src.sub(/\A#![^\n]*\n/, '')
@@ -33,6 +59,7 @@ class Lambchop::Client
     end
 
     comment.sub!(%r|\*/\z|, '')
-    YAML.load(comment)
+
+    [YAML.load(comment), ss.rest.sub(/\A\n/, '')]
   end
 end

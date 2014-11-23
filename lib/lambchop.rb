@@ -8,5 +8,5 @@ module Lambchop; end
 
 require 'lambchop/client'
 require 'lambchop/dump'
-require 'lambchop/logs_watch_dog'
+require 'lambchop/watch_dog'
 require 'lambchop/version'
