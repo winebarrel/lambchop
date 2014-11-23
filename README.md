@@ -1,6 +1,6 @@
 # Lambchop
 
-TODO: Write a gem description
+It is a tool that invoke AWS Lambda function from the local machine as a normally script.
 
 ## Installation
 
@@ -20,12 +20,76 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+**Terminal 1**:
+```sh
+$ cat test.js
+#!/usr/bin/env lambchop
+/*
+function_name: test # default: file name without ext
+runtime: nodejs     # default: nodejs
+mode: event         # default: event
+description: ''     # default: (empty)
+timeout: 3          # default: 3
+memory_size: 128    # default: 128
+role: arn:aws:iam::NNNNNNNNNNNN:role/lambda_exec_role
+handler: test.handler
+*/
+console.log('Loading event');
 
-## Contributing
+exports.handler = function(event, context) {
+    console.log('value1 = ' + event.key1);
+    console.log('value2 = ' + event.key2);
+    console.log('value3 = ' + event.key3);
+    context.done(null, 'Hello World');  // SUCCESS with message
+};
 
-1. Fork it ( https://github.com/[my-github-username]/lambchop/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+$ ./test.js
+(Wait event...)
+```
+
+**Terminal 2**:
+```sh
+$ lambchop-cat
+usage: lambchop-cat <function-name>
+$ lambchop-cat
+$ echo '{"key1":100, "key2":200, "key3":300}' | bundle exec ./bin/lambchop-cat test
+```
+
+**Terminal 1**:
+```sh
+2014-11-23T08:06:53.212Z  xxxxxxxxxxxxxxxx  Loading event
+START RequestId: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+2014-11-23T08:06:53.330Z  xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx  value1 = 100
+2014-11-23T08:06:53.330Z  xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx  value3 = 300
+2014-11-23T08:06:53.330Z  xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx  value2 = 200
+END RequestId: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+REPORT RequestId: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx  Duration: 117.54 ms Billed Duration: 200 ms   Memory Size: 128 MB Max Memory Used: 9 MB
+```
+
+### Dump function
+
+```sh
+$ lambchop-dump
+usage: lambchop-dump <function-name>
+
+$ lambchop-dump test
+#!/usr/bin/env lambchop
+/*
+function_name: test
+runtime: nodejs
+role: arn:aws:iam::NNNNNNNNNNNN:role/lambda_exec_role
+handler: test.handler
+mode: event
+description: ''
+timeout: 3
+memory_size: 128
+*/
+console.log('Loading event');
+
+exports.handler = function(event, context) {
+    console.log('value1 = ' + event.key1);
+    console.log('value2 = ' + event.key2);
+    console.log('value3 = ' + event.key3);
+    context.done(null, 'Hello World');  // SUCCESS with message
+};
+```
