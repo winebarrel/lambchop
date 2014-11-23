@@ -122,6 +122,29 @@ START RequestId: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 └── node_modules/
 ```
 
+# Diff
+```sh
+$ lambchop-diff
+usage: lambchop-cat <function-name> <file>
+
+$ lambchop-diff test ./test.js
+--- test:test.js
++++ ./test.js
+@@ -1,11 +1,11 @@
+ var http = require('http');
+
+ exports.handler = function(event, context) {
+-  http.get('http://example.com/', function(res) {
++  http.get('http://www.yahoo.com/', function(res) {
+     res.setEncoding('utf8');
+     res.on('data', function(str) {
+       console.log(str);
+       context.done();
+     });
+   });
+ };
+```
+
 ## Demo
 
 * https://asciinema.org/a/14158
