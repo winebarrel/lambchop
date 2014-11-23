@@ -20,7 +20,9 @@ class Lambchop::Client
     config['mode']    ||= 'event'
     config['runtime'] ||= 'nodejs'
 
-    upload_function(config, src)
+    resp = upload_function(config, src)
+    $stderr.puts('Function was uploaded:')
+    $stderr.puts(JSON.pretty_generate(resp.to_h))
 
     Lambchop::WatchDog.start(function_name, @options[:watch_dog] || {})
 
