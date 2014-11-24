@@ -13,6 +13,26 @@ ARGV.options do |opt|
   opt.parse!
 end
 
+if ARGV.length < 1
+  puts <<-EOS
+Please run the lambda script that has the following header:
+
+#!/usr/bin/env lambchop
+/*
+function_name: any_name     # default: file name without ext
+runtime:       nodejs       # default: nodejs
+mode:          event        # default: event
+description:   any_desc     # default: (empty)
+timeout:       3            # default: 3
+memory_size:   128          # default: 128
+handler:       test.handler # Module name is filename, e.g. index.js -> index.handler
+role: arn:aws:iam::NNNNNNNNNNNN:role/any_lambda_exec_role
+*/
+  EOS
+  exit 1
+
+end
+
 open(ARGV[0]) do |f|
   Lambchop::Client.start(f.read, f.path, options)
 end
