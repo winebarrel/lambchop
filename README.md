@@ -24,6 +24,10 @@ Or install it yourself as:
 
 **Terminal 1**:
 ```sh
+$ export AWS_ACCESS_KEY_ID=...
+$ export AWS_SECRET_ACCESS_KEY=...
+$ export AWS_REGION=us-east-1
+
 $ cat test.js
 #!/usr/bin/env lambchop
 /*
@@ -53,6 +57,10 @@ $ ./test.js
 
 **Terminal 2**:
 ```sh
+$ export AWS_ACCESS_KEY_ID=...
+$ export AWS_SECRET_ACCESS_KEY=...
+$ export AWS_REGION=us-east-1
+
 $ lambchop-cat
 usage: lambchop-cat <function-name>
 
@@ -62,6 +70,7 @@ $ echo '{"key1":100, "key2":200, "key3":300}' | lambchop-cat test
 
 **Terminal 1**:
 ```sh
+(Wait event...)
 2014-11-23T08:06:53.212Z  xxxxxxxxxxxxxxxx  Loading event
 START RequestId: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 2014-11-23T08:06:53.330Z  xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx  value1 = 100
