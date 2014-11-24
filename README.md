@@ -126,14 +126,14 @@ START RequestId: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 ...
 ```
 
-# node module path
+## node module path
 ```
 .
 ├── lambda-script.js
 └── node_modules/
 ```
 
-# Diff
+## Diff
 ```sh
 $ lambchop-diff
 usage: lambchop-cat <function-name> <file>
