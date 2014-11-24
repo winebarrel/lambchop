@@ -20,9 +20,7 @@ class Lambchop::Client
     config['mode']    ||= 'event'
     config['runtime'] ||= 'nodejs'
 
-    resp = upload_function(config, src)
-    $stderr.puts('Function was uploaded:')
-    $stderr.puts(JSON.pretty_generate(resp.to_h))
+    upload_function(config, src)
 
     exit if @options[:detach]
 
@@ -36,8 +34,15 @@ class Lambchop::Client
   def upload_function(config, src)
     params = {}
     config.each {|k, v| params[k.to_sym] = v }
-    params[:function_zip] = zip_source(src).string
-    @client.upload_function(params)
+    buf, node_modules = zip_source(src)
+    params[:function_zip] = buf.string
+
+    resp = @client.upload_function(params)
+
+    $stderr.puts('Function was uploaded:')
+    $stderr.puts(JSON.pretty_generate(resp.to_h))
+    $stderr.puts('Node modules:')
+    $stderr.puts(JSON.pretty_generate(node_modules))
   end
 
   def zip_source(src)
@@ -50,7 +55,7 @@ class Lambchop::Client
       end
     end
 
-    Zip::OutputStream.write_buffer do |out|
+    buf = Zip::OutputStream.write_buffer do |out|
       out.put_next_entry(File.basename(@path))
       out.write(src)
 
@@ -59,5 +64,11 @@ class Lambchop::Client
         out.write(open(file, &:read))
       end
     end
+
+    node_modules = node_modules.map {|file|
+      file.sub(%r|\A#{src_dir}/|, '').split('/', 3)[1]
+    }.uniq.sort
+
+    [buf, node_modules]
   end
 end
