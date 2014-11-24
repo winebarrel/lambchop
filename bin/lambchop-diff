@@ -8,6 +8,8 @@ if ARGV.length != 2
   exit 1
 end
 
-open(ARGV[1]) do |f|
-  Lambchop::Diff.diff(ARGV[0], f)
+Lambchop::Utils.with_error_logging do
+  open(ARGV[1]) do |f|
+    Lambchop::Diff.diff(ARGV[0], f)
+  end
 end

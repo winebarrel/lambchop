@@ -8,4 +8,6 @@ if ARGV.length != 1
   exit 1
 end
 
-Lambchop::Cat.cat(ARGV[0], $stdin)
+Lambchop::Utils.with_error_logging do
+  Lambchop::Cat.cat(ARGV[0], $stdin)
+end

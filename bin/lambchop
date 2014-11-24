@@ -33,6 +33,8 @@ role: arn:aws:iam::NNNNNNNNNNNN:role/any_lambda_exec_role
 
 end
 
-open(ARGV[0]) do |f|
-  Lambchop::Client.start(f.read, f.path, options)
+Lambchop::Utils.with_error_logging do
+  open(ARGV[0]) do |f|
+    Lambchop::Client.start(f.read, f.path, options)
+  end
 end

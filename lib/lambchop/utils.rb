@@ -30,5 +30,17 @@ class Lambchop::Utils
         end
       end
     end
+
+    def with_error_logging
+      begin
+        yield
+      rescue => e
+        if ENV['DEBUG'] == '1'
+          raise e
+        else
+          $stdout.puts("[ERROR] #{e.message}")
+        end
+      end
+    end
   end # of class methods
 end

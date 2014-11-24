@@ -8,4 +8,7 @@ if ARGV.length != 1
   exit 1
 end
 
-Lambchop::Tail.tail(ARGV[0])
+
+Lambchop::Utils.with_error_logging do
+  Lambchop::Tail.tail(ARGV[0])
+end
