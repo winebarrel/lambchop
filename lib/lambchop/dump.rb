@@ -43,7 +43,10 @@ class Lambchop::Dump
 
   def puts_source(location)
     Lambchop::Utils.open_source(location) do |name, src|
-      @out.puts("// #{name}")
+      unless src =~ %r|\A// #{Regexp.escape(name)}\n|
+        @out.puts("// #{name}")
+      end
+
       @out.puts(src)
     end
   end
