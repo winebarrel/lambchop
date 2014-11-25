@@ -9,6 +9,7 @@ class Lambchop::Tail
   end
 
   def tail
+    trap(:INT) { exit } unless Lambchop::Utils.debug?
     Lambchop::WatchDog.start(@function_name, @options)
     sleep
   end

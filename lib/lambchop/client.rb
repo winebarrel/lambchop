@@ -24,6 +24,7 @@ class Lambchop::Client
 
     exit if @options[:detach]
 
+    trap(:INT) { exit } unless Lambchop::Utils.debug?
     Lambchop::WatchDog.start(function_name, @options[:watch_dog] || {})
 
     sleep

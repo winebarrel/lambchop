@@ -35,12 +35,16 @@ class Lambchop::Utils
       begin
         yield
       rescue => e
-        if ENV['DEBUG'] == '1'
+        if debug?
           raise e
         else
           $stdout.puts("[ERROR] #{e.message}")
         end
       end
+    end
+
+    def debug?
+      ENV['DEBUG'] == '1'
     end
   end # of class methods
 end
