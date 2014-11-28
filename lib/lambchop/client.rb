@@ -14,6 +14,10 @@ class Lambchop::Client
     src = Lambchop::Utils.remove_shebang(@source)
     config, src = Lambchop::Utils.parse_magic_comment(src)
 
+    if @options[:use_erb]
+      src = ERB.new(src, nil, '-').result
+    end
+
     config['function_name'] ||= File.basename(@path, '.js')
     function_name = config['function_name']
 

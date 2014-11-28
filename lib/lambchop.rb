@@ -1,3 +1,4 @@
+require 'erb'
 require 'json'
 require 'open-uri'
 require 'yaml'

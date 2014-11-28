@@ -9,7 +9,8 @@ Version = Lambchop::VERSION
 options = {}
 
 ARGV.options do |opt|
-  opt.on('-d', '--detach') { options[:detach] = true }
+  opt.on('-d', '--detach')  { options[:detach]  = true }
+  opt.on('-e', '--use-erb') { options[:use_erb] = true }
   opt.parse!
 end
 
