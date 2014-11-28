@@ -115,6 +115,13 @@ exports.handler = function(event, context) {
 ...
 ```
 
+## Use [ERB](http://docs.ruby-lang.org/en/trunk/ERB.html) as preprocessor
+
+```javascript
+#!/usr/bin/env lambchop -e
+...
+```
+
 ## Follow log only
 
 ```sh
