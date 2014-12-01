@@ -11,8 +11,10 @@ class Lambchop::Client
   end
 
   def start
+    src = @source
+
     if @options[:use_erb]
-      src = ERB.new(@source, nil, '-').result
+      src = ERB.new(src, nil, '-').result
     end
 
     src = Lambchop::Utils.remove_shebang(src)
