@@ -45,9 +45,26 @@ class Lambchop::Client
     params[:function_zip] = buf.string
 
     resp = @client.upload_function(params)
+    resp_h = {}
+
+    [
+      :function_name,
+      :function_arn,
+      :configuration_id,
+      :runtime,
+      :role,
+      :handler,
+      :mode,
+      :description,
+      :timeout,
+      :memory_size,
+      :last_modified,
+    ].each do |key|
+      resp_h[key] = resp[key]
+    end
 
     $stderr.puts('Function was uploaded:')
-    $stderr.puts(JSON.pretty_generate(resp.to_h))
+    $stderr.puts(JSON.pretty_generate(resp_h))
     $stderr.puts('Node modules:')
     $stderr.puts(JSON.pretty_generate(node_modules))
   end
