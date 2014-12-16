@@ -8,7 +8,7 @@ class Lambchop::WatchDog
   def initialize(function_name, options = {})
     @function_name  = function_name
     @log_group_name = "/aws/lambda/#{@function_name}"
-    @client         = options[:client] || Aws::CloudWatchLogs::Client.new(region: 'us-east-1')
+    @client         = options[:client] || Aws::CloudWatchLogs::Client.new
     @start_time     = options[:start_time] || Time.now
     @out            = options[:out] || $stdout
     @last_timestamp = time_to_timestamp(@start_time) - 1
