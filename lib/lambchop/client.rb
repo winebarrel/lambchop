@@ -23,10 +23,9 @@ class Lambchop::Client
     config['function_name'] ||= File.basename(@path, '.js')
     function_name = config['function_name']
 
-    config['mode']    ||= 'event'
     config['runtime'] ||= 'nodejs'
 
-    upload_function(config, src)
+    create_or_update_function(config, src)
 
     exit if @options[:detach]
 
@@ -38,23 +37,35 @@ class Lambchop::Client
 
   private
 
-  def upload_function(config, src)
+  def create_or_update_function(config, src)
     params = {}
     config.each {|k, v| params[k.to_sym] = v }
     buf, node_modules = zip_source(src)
-    params[:function_zip] = buf.string
 
-    resp = @client.upload_function(params)
+    begin
+      params[:code] = {:zip_file => buf.string}
+      resp = @client.create_function(params)
+    rescue Aws::Lambda::Errors::ResourceConflictException => e
+      if e.message =~ /\AFunction already exist:/
+        params = {
+          :function_name => config['function_name'],
+          :zip_file => buf.string
+        }
+
+        resp = @client.update_function_code(params)
+      else
+        raise e
+      end
+    end
     resp_h = {}
 
     [
       :function_name,
       :function_arn,
-      :configuration_id,
       :runtime,
       :role,
       :handler,
-      :mode,
+      :code_size,
       :description,
       :timeout,
       :memory_size,

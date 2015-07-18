@@ -33,7 +33,6 @@ $ cat test.js
 /*
 function_name: test # default: file name without ext
 runtime: nodejs     # default: nodejs
-mode: event         # default: event
 description: ''     # default: (empty)
 timeout: 3          # default: 3
 memory_size: 128    # default: 128

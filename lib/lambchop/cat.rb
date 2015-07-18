@@ -17,9 +17,9 @@ class Lambchop::Cat
       invoke_args = invoke_args.read
     end
 
-    @client.invoke_async(
+    p @client.invoke(
       :function_name => @function_name,
-      :invoke_args => invoke_args
+      :payload => invoke_args
     )
   end
 end
