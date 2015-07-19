@@ -43,6 +43,10 @@ class Lambchop::Utils
       end
     end
 
+    def camelize(obj)
+      obj.to_s.gsub(/(?:\A|_)([a-z])/) { $1.upcase }
+    end
+
     def debug?
       ENV['DEBUG'] == '1'
     end

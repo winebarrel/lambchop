@@ -1,3 +1,4 @@
+require 'base64'
 require 'erb'
 require 'json'
 require 'open-uri'

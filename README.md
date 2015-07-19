@@ -47,7 +47,7 @@ exports.handler = function(event, context) {
     console.log('value1 = ' + event.key1);
     console.log('value2 = ' + event.key2);
     console.log('value3 = ' + event.key3);
-    context.done(null, 'Hello World');  // SUCCESS with message
+    context.success('Hello World');
 };
 
 $ ./test.js
@@ -63,8 +63,11 @@ $ export AWS_REGION=us-east-1
 $ lambchop-cat
 usage: lambchop-cat <function-name>
 
-$ lambchop-cat
 $ echo '{"key1":100, "key2":200, "key3":300}' | lambchop-cat test
+---
+status_code: 200
+function_error:
+payload: '"Hello World"'
 ```
 
 **Terminal 1**:
@@ -77,6 +80,44 @@ START RequestId: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 2014-11-23T08:06:53.330Z  xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx  value2 = 200
 END RequestId: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 REPORT RequestId: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx  Duration: 117.54 ms Billed Duration: 200 ms   Memory Size: 128 MB Max Memory Used: 9 MB
+```
+
+### Invoke async
+
+```sh
+$ echo '{"key1":100, "key2":200, "key3":300}' | lambchop-cat test -t event
+---
+status_code: 202
+function_error:
+payload: ''
+```
+
+### Invoke with tail
+
+```sh
+$ echo '{"key1":100, "key2":200, "key3":300}' | lambchop-cat test -l tail
+status_code: 200
+function_error:
+payload: '"Hello world!"'
+log_result: |-
+  2014-11-23T08:06:53.212Z  xxxxxxxxxxxxxxxx  Loading event
+  START RequestId: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+  2014-11-23T08:06:53.330Z  xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx  value1 = 100
+  2014-11-23T08:06:53.330Z  xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx  value3 = 300
+  2014-11-23T08:06:53.330Z  xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx  value2 = 200
+  END RequestId: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+  REPORT RequestId: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx  Duration: 117.54 ms Billed Duration: 200 ms   Memory Size: 128 MB Max Memory Used: 9 MB
+```
+
+
+### DryRun
+
+```sh
+$ echo '{"key1":100, "key2":200, "key3":300}' | lambchop-cat test -t dry_run
+---
+status_code: 204
+function_error:
+payload: ''
 ```
 
 ## Dump function
@@ -92,7 +133,6 @@ function_name: test
 runtime: nodejs
 role: arn:aws:iam::NNNNNNNNNNNN:role/lambda_exec_role
 handler: test.handler
-mode: event
 description: ''
 timeout: 3
 memory_size: 128
@@ -103,7 +143,7 @@ exports.handler = function(event, context) {
     console.log('value1 = ' + event.key1);
     console.log('value2 = ' + event.key2);
     console.log('value3 = ' + event.key3);
-    context.done(null, 'Hello World');  // SUCCESS with message
+    context.success('Hello World');
 };
 ```
 

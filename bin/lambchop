@@ -22,7 +22,6 @@ Please run the lambda script that has the following header:
 /*
 function_name: any_name     # default: file name without ext
 runtime:       nodejs       # default: nodejs
-mode:          event        # default: event
 description:   any_desc     # default: (empty)
 timeout:       3            # default: 3
 memory_size:   128          # default: 128

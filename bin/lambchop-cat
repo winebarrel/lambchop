@@ -2,12 +2,21 @@
 $: << File.expand_path("#{File.dirname __FILE__}/../lib")
 require 'rubygems'
 require 'lambchop'
+require 'optparse'
 
-if ARGV.length != 1
-  puts 'usage: lambchop-cat <function-name>'
-  exit 1
+Version = Lambchop::VERSION
+
+options = {
+  :invocation_type => :request_response,
+  :log_type => :none
+}
+
+ARGV.options do |opt|
+  opt.on('-t', '--invocation-type=TYPE', [:request_response, :event, :dry_run]) {|v| options[:invocation_type] = v }
+  opt.on('-l', '--log-type=TYPE', [:none, :tail]) {|v| options[:log_type] = v }
+  opt.parse!
 end
 
 Lambchop::Utils.with_error_logging do
-  Lambchop::Cat.cat(ARGV[0], $stdin)
+  Lambchop::Cat.cat(ARGV[0], $stdin, options)
 end

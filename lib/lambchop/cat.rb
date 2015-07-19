@@ -7,6 +7,7 @@ class Lambchop::Cat
     @function_name = function_name
     @invoke_args   = invoke_args
     @client        = options[:client] || Aws::Lambda::Client.new
+    @out           = options[:out] || $stdout
     @options       = options
   end
 
@@ -17,9 +18,33 @@ class Lambchop::Cat
       invoke_args = invoke_args.read
     end
 
-    p @client.invoke(
+    resp = @client.invoke(
       :function_name => @function_name,
-      :payload => invoke_args
+      :payload => invoke_args,
+      :invocation_type => Lambchop::Utils.camelize(@options[:invocation_type] || :request_response),
+      :log_type => Lambchop::Utils.camelize(@options[:log_type] || :none)
     )
+
+    out = {
+      'status_code' => resp[:status_code],
+      'function_error' => resp[:function_error],
+      'payload' => nil
+    }
+
+    log_result = resp[:log_result]
+    payload = resp[:payload]
+
+    if log_result
+      log_result = Base64.strict_decode64(log_result)
+      log_result.gsub!("\t", '    ').strip!
+      def log_result.yaml_style() Psych::Nodes::Scalar::LITERAL end
+      out['log_result'] = log_result
+    end
+
+    if payload
+      out['payload'] = payload.string
+    end
+
+    @out.puts YAML.dump(out)
   end
 end

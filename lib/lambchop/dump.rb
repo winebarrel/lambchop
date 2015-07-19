@@ -11,7 +11,7 @@ class Lambchop::Dump
   end
 
   def dump
-    page = @client.get_function(:function_name => @function_name).first
+    page = @client.get_function(:function_name => @function_name)
     puts_shebang
     puts_magic_comment(page.configuration)
     puts_source(page.code.location)
@@ -29,7 +29,6 @@ class Lambchop::Dump
       runtime
       role
       handler
-      mode
       description
       timeout
       memory_size

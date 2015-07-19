@@ -21,7 +21,7 @@ class Lambchop::Diff
     file = Lambchop::Utils.remove_shebang(file)
     config, file = Lambchop::Utils.parse_magic_comment(file)
 
-    page = @client.get_function(:function_name => @function_name).first
+    page = @client.get_function(:function_name => @function_name)
 
     Lambchop::Utils.open_source(page.code.location) do |name, func|
       diff = Diffy::Diff.new(func, file, :include_diff_info => true).to_s
