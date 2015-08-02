@@ -47,12 +47,16 @@ class Lambchop::Client
       resp = @client.create_function(params)
     rescue Aws::Lambda::Errors::ResourceConflictException => e
       if e.message =~ /\AFunction already exist:/
-        params = {
+        @client.update_function_code(
           :function_name => config['function_name'],
           :zip_file => buf.string
-        }
+        )
 
-        resp = @client.update_function_code(params)
+        [:runtime, :code].each do |key|
+          params.delete(key)
+        end
+
+        resp = @client.update_function_configuration(params)
       else
         raise e
       end
