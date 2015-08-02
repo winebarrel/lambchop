@@ -42,7 +42,8 @@ class Lambchop::Cat
     end
 
     if payload
-      out['payload'] = payload.string
+      payload_string = payload.string
+      out['payload'] = JSON.parse(payload_string) rescue payload_string
     end
 
     @out.puts YAML.dump(out)
