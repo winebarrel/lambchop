@@ -38,7 +38,7 @@ timeout: 3          # default: 3
 memory_size: 128    # default: 128
 role: arn:aws:iam::NNNNNNNNNNNN:role/lambda_exec_role
 handler: test.handler
-include_files: */*    # default: nil
+include_files: */*  # default: nil
 # Handler module name is filename.
 # `handler:` is `index.handler` when filename is `index.js`
 */
