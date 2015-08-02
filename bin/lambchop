@@ -27,6 +27,7 @@ timeout:       3            # default: 3
 memory_size:   128          # default: 128
 handler:       test.handler # Module name is filename, e.g. index.js -> index.handler
 role: arn:aws:iam::NNNNNNNNNNNN:role/any_lambda_exec_role
+include_files: */*          # default: nil
 */
   EOS
   exit 1

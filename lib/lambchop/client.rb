@@ -21,11 +21,11 @@ class Lambchop::Client
     config, src = Lambchop::Utils.parse_magic_comment(src)
 
     config['function_name'] ||= File.basename(@path, '.js')
-    function_name = config['function_name']
-
     config['runtime'] ||= 'nodejs'
+    function_name = config['function_name']
+    include_files = config.delete('include_files')
 
-    create_or_update_function(config, src)
+    create_or_update_function(config, src, include_files)
 
     exit if @options[:detach]
 
@@ -37,10 +37,10 @@ class Lambchop::Client
 
   private
 
-  def create_or_update_function(config, src)
+  def create_or_update_function(config, src, include_files)
     params = {}
     config.each {|k, v| params[k.to_sym] = v }
-    buf, node_modules = zip_source(src)
+    buf, node_modules, extra_files = zip_source(src, include_files)
 
     begin
       params[:code] = {:zip_file => buf.string}
@@ -61,6 +61,7 @@ class Lambchop::Client
         raise e
       end
     end
+
     resp_h = {}
 
     [
@@ -80,13 +81,15 @@ class Lambchop::Client
 
     $stderr.puts('Function was uploaded:')
     $stderr.puts(JSON.pretty_generate(resp_h))
-    $stderr.puts('Node modules:')
-    $stderr.puts(JSON.pretty_generate(node_modules))
+    $stderr.puts('Node modules: ' + JSON.dump(node_modules))
+    $stderr.puts('Extra files: ' + JSON.dump(extra_files))
   end
 
-  def zip_source(src)
+  def zip_source(src, include_files)
     src_dir = File.dirname(@path)
+    script_file = File.basename(@path)
     node_modules = []
+    extra_files = []
 
     Dir.glob("#{src_dir}/node_modules/**/*") do |file|
       if File.file?(file)
@@ -94,11 +97,25 @@ class Lambchop::Client
       end
     end
 
+    if include_files
+      Dir.glob(include_files) do |file|
+        next unless File.file?(file)
+        next if node_modules.include?(file)
+        next if file.sub(%r|\A#{src_dir}/|, '') == script_file
+        extra_files << file
+      end
+    end
+
     buf = Zip::OutputStream.write_buffer do |out|
-      out.put_next_entry(File.basename(@path))
+      out.put_next_entry(script_file)
       out.write(src)
 
       node_modules.each do |file|
+        out.put_next_entry(file.sub(%r|\A#{src_dir}/|, ''))
+        out.write(open(file, &:read))
+      end
+
+      extra_files.each do |file|
         out.put_next_entry(file.sub(%r|\A#{src_dir}/|, ''))
         out.write(open(file, &:read))
       end
@@ -108,6 +125,6 @@ class Lambchop::Client
       file.sub(%r|\A#{src_dir}/|, '').split('/', 3)[1]
     }.uniq.sort
 
-    [buf, node_modules]
+    [buf, node_modules, extra_files]
   end
 end

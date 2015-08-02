@@ -38,6 +38,7 @@ timeout: 3          # default: 3
 memory_size: 128    # default: 128
 role: arn:aws:iam::NNNNNNNNNNNN:role/lambda_exec_role
 handler: test.handler
+include_files: */*    # default: nil
 # Handler module name is filename.
 # `handler:` is `index.handler` when filename is `index.js`
 */
@@ -177,6 +178,17 @@ START RequestId: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 .
 ├── lambda-script.js
 └── node_modules/
+```
+
+## Include extra files
+
+```javascript
+#!/usr/bin/env lambchop
+/*
+...
+include_files: *.txt
+*/
+...
 ```
 
 ## Diff
