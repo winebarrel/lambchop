@@ -36,7 +36,7 @@ class Lambchop::Cat
 
     if log_result
       log_result = Base64.strict_decode64(log_result)
-      log_result.gsub!("\t", '    ').strip!
+      log_result.gsub!("\t", '    ').gsub!(/\s+\n/, "\n").strip!
       def log_result.yaml_style() Psych::Nodes::Scalar::LITERAL end
       out['log_result'] = log_result
     end
